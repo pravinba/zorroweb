@@ -12,6 +12,7 @@ import com.zorro.web.i18n.I18NService;
 
 import junit.framework.Assert;
 
+@SuppressWarnings("deprecation")
 @RunWith(SpringRunner.class)
 //@SpringApplicationConfiguration(classes=ZorrowebApplication.class)
 @WebAppConfiguration
