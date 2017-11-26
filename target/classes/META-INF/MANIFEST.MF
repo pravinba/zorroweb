@@ -1,0 +1,10 @@
+Manifest-Version: 1.0
+Implementation-Title: zorroweb
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: Lenovo pc
+Implementation-Vendor-Id: com.zorro
+Build-Jdk: 1.8.0_151
+Implementation-URL: http://projects.spring.io/spring-boot/zorroweb/
+Created-By: Maven Integration for Eclipse
+Implementation-Vendor: Pivotal Software, Inc.
+
