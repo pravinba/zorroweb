@@ -1,6 +1,11 @@
-*/target/**
+target/**
 # Compiled class file
-#*.class
+*.class
+
+# Other files
+*.settings
+*.project
+*.classpath
 
 # Log file
 *.log
@@ -13,6 +18,7 @@
 
 # Package Files #
 *.jar
+*.*jar*
 *.war
 *.ear
 *.zip
