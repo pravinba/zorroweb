@@ -81,8 +81,6 @@ public class User implements Serializable{
         return username;
     }
 
-
-
     public void setUsername(String username) {
         this.username = username;
     }
@@ -204,7 +202,6 @@ public class User implements Serializable{
     public void setUserRoles(Set<UserRole> userRoles) {
         this.userRoles = userRoles;
     }
-
 
 
     @Override
