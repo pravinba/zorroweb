@@ -1,5 +1,7 @@
 package com.zorro.config;
 
+import org.h2.server.web.WebServlet;
+import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -10,11 +12,18 @@ import com.zorro.backend.service.MockEmailService;
 
 @Configuration
 @Profile("dev")
-@PropertySource("application-dev.properties")
+@PropertySource("classpath:/application-dev.properties")
 public class DevelopmentConfig {
 
 	@Bean
 	public EmailService emailService() {
 		return new MockEmailService(); 
+	}
+	
+	@Bean
+	public ServletRegistrationBean h2ConsoleServletRegistration(){
+		ServletRegistrationBean bean = new ServletRegistrationBean(new WebServlet());
+		bean.addUrlMappings("/console/*");		
+		return bean;
 	}
 }

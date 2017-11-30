@@ -10,7 +10,7 @@ import com.zorro.backend.service.smtpEmailService;
 
 @Configuration
 @Profile("prod")
-@PropertySource("application-prod.properties")
+@PropertySource("classpath:/application-prod.properties")
 public class ProductionConfig {
 	
 	@Bean
