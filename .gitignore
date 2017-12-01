@@ -1,7 +1,11 @@
+target/*
 target/**
 target/classes/*
-target/*
+
 target/*.*
+
+bin/*
+bin/**
 # Compiled class file
 *.class
 

@@ -1,8 +1,5 @@
 package com.zorro.test.integration;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-
 import java.util.HashSet;
 import java.util.Set;
 
@@ -22,14 +19,14 @@ import com.zorro.backend.persistence.domain.backend.UserRole;
 import com.zorro.backend.persistence.repositories.PlanRepository;
 import com.zorro.backend.persistence.repositories.RoleRepository;
 import com.zorro.backend.persistence.repositories.UserRepository;
+import com.zorro.enums.PlansEnum;
+import com.zorro.enums.RolesEnum;
 
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ZorrowebApplication.class)
 public class RepositoryIntegrationTest {
 
-	private static final int BASIC_PLAN_ID = 1;
-	private static final int BASIC_ROLE_ID = 1;
 	
 	@Autowired
 	private PlanRepository planRepository;
@@ -50,35 +47,29 @@ public class RepositoryIntegrationTest {
 	
 	@Test
 	public void testCreateNewPlan() throws Exception{
-		Plan basicPlan = createBasicPlan();
+		Plan basicPlan = createPlan(PlansEnum.BASIC);
 		planRepository.save(basicPlan);
-		Plan retrievedPlan = planRepository.findOne(BASIC_PLAN_ID);
+		Plan retrievedPlan = planRepository.findOne(PlansEnum.BASIC.getId());
 		Assert.notNull(retrievedPlan);
 	}
 
-	private Plan createBasicPlan() {
-		// TODO Auto-generated method stub
-		Plan plan = new Plan();
-		plan.setId(BASIC_PLAN_ID);
-		plan.setName("Basic");
-		return plan;
+	private Plan createPlan(PlansEnum plansEnum) {
+		// TODO Auto-generated method stub		
+		return new Plan(plansEnum);
 	}
 	
 	
 	@Test
 	public void testCreateNewRole() throws Exception{
-		Role basicRole = createBasicRole();
+		Role basicRole = createRole(RolesEnum.BASIC);
 		roleRepository.save(basicRole);
-		Role retrievedRole = roleRepository.findOne(BASIC_ROLE_ID);
+		Role retrievedRole = roleRepository.findOne(RolesEnum.BASIC.getId());
 		Assert.notNull(retrievedRole);
 	}
 
-	private Role createBasicRole() {
+	private Role createRole(RolesEnum rolesEnum) {
 		// TODO Auto-generated method stub
-		Role role = new Role();
-		role.setId(BASIC_ROLE_ID);
-		role.setName("ROLE_USER");
-		return role;
+		return new Role(rolesEnum);
 	}
 	
 	
@@ -103,20 +94,18 @@ public class RepositoryIntegrationTest {
 		
 	
 		/* Create a Plan and populate it to POJO*/
-		Plan basicPlan = createBasicPlan();
+		Plan basicPlan = createPlan(PlansEnum.BASIC);
 				
 		/* Create a User - Populate plan & other attributes to the User POJO*/
 		User basicUser = createBasicUser();
 		basicUser.setPlan(basicPlan);
 		
 		/* Create a Role*/
-		Role basicRole = createBasicRole();			
+		Role basicRole = createRole(RolesEnum.BASIC);			
 		
 		/* Add the role & user to a HashSet*/		
 		Set<UserRole> userRoles = new HashSet<>();
-		UserRole userRole = new UserRole();
-		userRole.setRole(basicRole);
-		userRole.setUser(basicUser);
+		UserRole userRole = new UserRole(basicUser, basicRole);		
 		userRoles.add(userRole);
 		
 		/* Populate UserRole to User POJO */
@@ -131,13 +120,14 @@ public class RepositoryIntegrationTest {
 		for(UserRole ur : userRoles) {
 			roleRepository.save(ur.getRole());
 		}
-		
+
+			
 		/* 3 - Save User in User table */
 		basicUser = userRepository.save(basicUser);
 		
 		/* 4 - Pull the added user and assert if User/Plan/Role properties are read successfully */
-		User newlyCreatedUser = userRepository.findByUsername(basicUser.getUsername());
-//		User newlyCreatedUser = userRepository.findOne((int) basicUser.getId());
+//		User newlyCreatedUser = userRepository.findByUsername(basicUser.getUsername());
+		User newlyCreatedUser = userRepository.findOne(basicUser.getId());
 		System.out.println(newlyCreatedUser.getFirstName());
 		Assert.notNull(newlyCreatedUser);
 		Assert.isTrue(newlyCreatedUser.getId()!=0);

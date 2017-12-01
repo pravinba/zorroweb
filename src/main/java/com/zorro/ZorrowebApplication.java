@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableJpaRepositories(basePackages="com.zorro.backend.persistence.repositories")
+
 public class ZorrowebApplication {
 
 	public static void main(String[] args) {

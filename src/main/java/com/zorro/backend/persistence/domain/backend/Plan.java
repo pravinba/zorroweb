@@ -3,6 +3,8 @@ package com.zorro.backend.persistence.domain.backend;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
+import com.zorro.enums.PlansEnum;
+
 @Entity
 public class Plan {
 	private static final long serialVersionUID = 1L;
@@ -14,6 +16,11 @@ public class Plan {
 	public Plan() {
 		
 	}
+	
+	public Plan(PlansEnum plansEnum) {
+        this.id = plansEnum.getId();
+        this.name = plansEnum.getPlanName();
+    }
 	
 	public int getId() {
 		return id;
