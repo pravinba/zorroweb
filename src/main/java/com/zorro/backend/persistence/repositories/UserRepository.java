@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.zorro.backend.persistence.domain.backend.User;
 
 @Repository
-public interface UserRepository extends CrudRepository<User, Integer>{
+public interface UserRepository extends CrudRepository<User, Long>{
 
 	 /**
      * Returns a User given a username or null if not found.
