@@ -26,6 +26,7 @@ public class UserService {
 	@Autowired
 	private RoleRepository roleRepository;
 	
+	@Transactional
 	public User CreateUser(User user, PlansEnum plansEnum, Set<UserRole> userRoles) {
 		
 		/* Create a plan & persist to DB */
