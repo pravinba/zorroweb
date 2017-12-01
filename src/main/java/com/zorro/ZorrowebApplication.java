@@ -16,7 +16,7 @@ import com.zorro.backend.persistence.domain.backend.UserRole;
 import com.zorro.backend.service.UserService;
 import com.zorro.enums.PlansEnum;
 import com.zorro.enums.RolesEnum;
-import com.zorro.utils.UsersUtil;
+import com.zorro.utils.UserUtils;
 import com.zorro.web.i18n.I18NService;
 
 @SpringBootApplication
@@ -34,15 +34,15 @@ public class ZorrowebApplication implements CommandLineRunner{
 	
 	public void run(String... args) throws Exception{
 		
-		User user = UsersUtil.createBasicUser();
+		User user = UserUtils.createBasicUser();
 		user.setUsername("CommandLineUser");
 		user.setEmail("CommandLine@email.com");
 		Set<UserRole> userRoles = new HashSet<>();
 		userRoles.add(new UserRole(user, new Role(RolesEnum.BASIC)));
 		
-		LOG.debug("Creating Username :"+user.getUsername());		
+		LOG.info("Creating Username :"+user.getUsername());		
 		User newUser = userService.CreateUser(user, PlansEnum.PRO, userRoles);
-		LOG.debug("Created Username :"+user.getUsername());	
+		LOG.info("Created Username :"+user.getUsername());	
 		
 	}
 }

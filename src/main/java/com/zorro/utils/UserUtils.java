@@ -2,9 +2,9 @@ package com.zorro.utils;
 
 import com.zorro.backend.persistence.domain.backend.User;
 
-public class UsersUtil {
+public class UserUtils {
 	
-	private UsersUtil () {
+	private UserUtils () {
 		throw new AssertionError("Non instantiable !");
 	}
 	

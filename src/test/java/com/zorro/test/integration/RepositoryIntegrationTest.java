@@ -21,6 +21,7 @@ import com.zorro.backend.persistence.repositories.RoleRepository;
 import com.zorro.backend.persistence.repositories.UserRepository;
 import com.zorro.enums.PlansEnum;
 import com.zorro.enums.RolesEnum;
+import com.zorro.utils.UserUtils;
 
 
 @RunWith(SpringRunner.class)
@@ -73,21 +74,7 @@ public class RepositoryIntegrationTest {
 	}
 	
 	
-	public User createBasicUser() {		
-		User user = new User();
-		user.setUsername("basicUser");
-		user.setFirstName("firstName");
-		user.setLastName("lastName");
-		user.setPassword("secret");
-		user.setEmail("me@test.com");
-		user.setPhoneNumber("1234567890");
-		user.setCountry("GB");
-		user.setDescription("A basic user");		
-		user.setEnabled(true);
-		user.setProfileImageUrl("http://bla@bla.com");	
-		
-		return user;
-	}
+
 	
 	@Test
 	public void createNewUser() throws Exception {
@@ -97,8 +84,10 @@ public class RepositoryIntegrationTest {
 		Plan basicPlan = createPlan(PlansEnum.BASIC);
 				
 		/* Create a User - Populate plan & other attributes to the User POJO*/
-		User basicUser = createBasicUser();
+		User basicUser = UserUtils.createBasicUser();
 		basicUser.setPlan(basicPlan);
+		basicUser.setUsername("IntgTestUser");
+		basicUser.setEmail("IntgTestUser@email.com");
 		
 		/* Create a Role*/
 		Role basicRole = createRole(RolesEnum.BASIC);			

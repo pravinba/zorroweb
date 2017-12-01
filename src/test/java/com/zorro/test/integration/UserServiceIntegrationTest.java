@@ -18,7 +18,7 @@ import com.zorro.backend.persistence.domain.backend.UserRole;
 import com.zorro.backend.service.UserService;
 import com.zorro.enums.PlansEnum;
 import com.zorro.enums.RolesEnum;
-import com.zorro.utils.UsersUtil;
+import com.zorro.utils.UserUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ZorrowebApplication.class)
@@ -29,7 +29,9 @@ public class UserServiceIntegrationTest {
 	@Test
 	public void testCreateNewUser() throws Exception{
 		
-		User basicUser = UsersUtil.createBasicUser();
+		User basicUser = UserUtils.createBasicUser();
+		basicUser.setUsername("ServiceUser");
+		basicUser.setEmail("ServiceUser@email.com");
 		
 		Set<UserRole> userRoles = new HashSet<>();
 		userRoles.add(new UserRole(basicUser, new Role(RolesEnum.BASIC)));
