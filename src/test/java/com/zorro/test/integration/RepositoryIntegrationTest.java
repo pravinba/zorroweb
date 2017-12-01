@@ -73,51 +73,58 @@ public class RepositoryIntegrationTest {
 		return new Role(rolesEnum);
 	}
 	
-	
+	@Test
+	public void testDeleteUser() throws Exception{
+		User basicUser = createUser();
+		userRepository.delete(basicUser.getId());
+	}
 
 	
 	@Test
 	public void createNewUser() throws Exception {
-		
-	
-		/* Create a Plan and populate it to POJO*/
-		Plan basicPlan = createPlan(PlansEnum.BASIC);
-				
-		/* Create a User - Populate plan & other attributes to the User POJO*/
-		User basicUser = UserUtils.createBasicUser();
-		basicUser.setPlan(basicPlan);
-		basicUser.setUsername("IntgTestUser");
-		basicUser.setEmail("IntgTestUser@email.com");
-		
-		/* Create a Role*/
-		Role basicRole = createRole(RolesEnum.BASIC);			
-		
-		/* Add the role & user to a HashSet*/		
-		Set<UserRole> userRoles = new HashSet<>();
-		UserRole userRole = new UserRole(basicUser, basicRole);		
-		userRoles.add(userRole);
-		
-		/* Populate UserRole to User POJO */
-		basicUser.getUserRoles().addAll(userRoles);
-		
-		/*Start persisting in DB*/
-		
-		/* 1 - Save Plan to Plan table */
-		planRepository.save(basicPlan);
-		
-		/* 2 - Save new Role in Roles table */
-		for(UserRole ur : userRoles) {
-			roleRepository.save(ur.getRole());
-		}
 
-			
-		/* 3 - Save User in User table */
-		basicUser = userRepository.save(basicUser);
+
+		// OLD VERSION
+//		/* Create a Plan and populate it to POJO*/
+//		Plan basicPlan = createPlan(PlansEnum.BASIC);
+//				
+//		/* Create a User - Populate plan & other attributes to the User POJO*/
+//		User basicUser = UserUtils.createBasicUser();
+//		basicUser.setPlan(basicPlan);
+//		basicUser.setUsername("IntgTestUser");
+//		basicUser.setEmail("IntgTestUser@email.com");
+//		
+//		/* Create a Role*/
+//		Role basicRole = createRole(RolesEnum.BASIC);			
+//		
+//		/* Add the role & user to a HashSet*/		
+//		Set<UserRole> userRoles = new HashSet<>();
+//		UserRole userRole = new UserRole(basicUser, basicRole);		
+//		userRoles.add(userRole);
+//		
+//		/* Populate UserRole to User POJO */
+//		basicUser.getUserRoles().addAll(userRoles);
+//		
+//		/*Start persisting in DB*/
+//		
+//		/* 1 - Save Plan to Plan table */
+//		planRepository.save(basicPlan);
+//		
+//		/* 2 - Save new Role in Roles table */
+//		for(UserRole ur : userRoles) {
+//			roleRepository.save(ur.getRole());
+//		}
+//
+//			
+//		/* 3 - Save User in User table */
+//		basicUser = userRepository.save(basicUser);
 		
 		/* 4 - Pull the added user and assert if User/Plan/Role properties are read successfully */
 //		User newlyCreatedUser = userRepository.findByUsername(basicUser.getUsername());
+		User basicUser = createUser();
+
 		User newlyCreatedUser = userRepository.findOne(basicUser.getId());
-		System.out.println(newlyCreatedUser.getFirstName());
+		//System.out.println(newlyCreatedUser.getFirstName());
 		Assert.notNull(newlyCreatedUser);
 		Assert.isTrue(newlyCreatedUser.getId()!=0);
 		Assert.notNull(newlyCreatedUser.getPlan());
@@ -128,9 +135,43 @@ public class RepositoryIntegrationTest {
 		for(UserRole ncr : newlyCreatedUserRoles ) {
 			Assert.notNull(ncr.getRole());
 			Assert.notNull(ncr.getRole().getId());
+			
 		}
-		
+		userRepository.delete(basicUser.getId());
 		
 	}
 	
+	private User createUser() {
+		/* Create a Plan and populate it to POJO*/
+		Plan basicPlan = createPlan(PlansEnum.BASIC);
+		
+		/* Save Plan to Plan table */
+		planRepository.save(basicPlan);
+				
+		/* Create a User - Populate plan & other attributes to the User POJO*/
+		User basicUser = UserUtils.createBasicUser();
+		basicUser.setPlan(basicPlan);
+		basicUser.setUsername("IntgTestUser");
+		basicUser.setEmail("IntgTestUser@email.com");
+		
+		/* Create a Role*/
+		Role basicRole = createRole(RolesEnum.BASIC);			
+		
+		/* Save Role to table */
+		roleRepository.save(basicRole);
+		
+		/* Add the role & user to a HashSet*/		
+		Set<UserRole> userRoles = new HashSet<>();
+		UserRole userRole = new UserRole(basicUser, basicRole);		
+		userRoles.add(userRole);
+		
+		/* Populate UserRole to User POJO */
+		basicUser.getUserRoles().addAll(userRoles);
+		basicUser = userRepository.save(basicUser);
+		return basicUser;
+	}
+	
+
 }	
+
+
