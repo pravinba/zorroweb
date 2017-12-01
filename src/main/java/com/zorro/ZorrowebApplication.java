@@ -35,7 +35,8 @@ public class ZorrowebApplication implements CommandLineRunner{
 	public void run(String... args) throws Exception{
 		
 		User user = UsersUtil.createBasicUser();
-		
+		user.setUsername("CommandLineUser");
+		user.setEmail("CommandLine@email.com");
 		Set<UserRole> userRoles = new HashSet<>();
 		userRoles.add(new UserRole(user, new Role(RolesEnum.BASIC)));
 		
