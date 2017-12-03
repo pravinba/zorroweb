@@ -160,27 +160,6 @@ public class User implements Serializable,UserDetails{
         this.enabled = enabled;
     }
 
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        Set<GrantedAuthority> authorities = new HashSet<>();
-//        userRoles.forEach(ur -> authorities.add(new Authority(ur.getRole().getName())));
-//        return authorities;
-//    }
 
     public String getPassword() {
         return password;

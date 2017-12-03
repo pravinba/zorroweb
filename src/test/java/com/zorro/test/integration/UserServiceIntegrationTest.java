@@ -3,7 +3,9 @@ package com.zorro.test.integration;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,15 +25,20 @@ import com.zorro.utils.UserUtils;
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ZorrowebApplication.class)
 public class UserServiceIntegrationTest {
+	
+	@Rule 
+	public TestName testName = new TestName();
+	
 	@Autowired
 	UserService userService;
 	
 	@Test
 	public void testCreateNewUser() throws Exception{
 		
-		User basicUser = UserUtils.createBasicUser();
-		basicUser.setUsername("ServiceUser");
-		basicUser.setEmail("ServiceUser@email.com");
+		String username = testName.getMethodName();
+		String email = testName.getMethodName() + "@zorromail.com";
+
+		User basicUser = UserUtils.createBasicUser("ServiceUser","ServiceUser@email.com");
 		
 		Set<UserRole> userRoles = new HashSet<>();
 		userRoles.add(new UserRole(basicUser, new Role(RolesEnum.BASIC)));

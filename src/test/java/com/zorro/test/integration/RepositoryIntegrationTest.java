@@ -4,7 +4,9 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -28,6 +30,8 @@ import com.zorro.utils.UserUtils;
 @SpringBootTest(classes = ZorrowebApplication.class)
 public class RepositoryIntegrationTest {
 
+	@Rule 
+	public TestName testName = new TestName();
 	
 	@Autowired
 	private PlanRepository planRepository;
@@ -75,13 +79,18 @@ public class RepositoryIntegrationTest {
 	
 	@Test
 	public void testDeleteUser() throws Exception{
-		User basicUser = createUser();
+		String username = testName.getMethodName();
+		String email = testName.getMethodName() + "@zorromail.com";
+
+		User basicUser = createUser(username, email);
 		userRepository.delete(basicUser.getId());
 	}
 
 	
 	@Test
 	public void createNewUser() throws Exception {
+		String username = testName.getMethodName();
+		String email = testName.getMethodName() + "@zorromail.com";
 
 
 		// OLD VERSION
@@ -121,7 +130,7 @@ public class RepositoryIntegrationTest {
 		
 		/* 4 - Pull the added user and assert if User/Plan/Role properties are read successfully */
 //		User newlyCreatedUser = userRepository.findByUsername(basicUser.getUsername());
-		User basicUser = createUser();
+		User basicUser = createUser(username, email);
 
 		User newlyCreatedUser = userRepository.findOne(basicUser.getId());
 		//System.out.println(newlyCreatedUser.getFirstName());
@@ -141,7 +150,7 @@ public class RepositoryIntegrationTest {
 		
 	}
 	
-	private User createUser() {
+	private User createUser(String username, String email) {
 		/* Create a Plan and populate it to POJO*/
 		Plan basicPlan = createPlan(PlansEnum.BASIC);
 		
@@ -149,10 +158,9 @@ public class RepositoryIntegrationTest {
 		planRepository.save(basicPlan);
 				
 		/* Create a User - Populate plan & other attributes to the User POJO*/
-		User basicUser = UserUtils.createBasicUser();
+		User basicUser = UserUtils.createBasicUser(username, email);
 		basicUser.setPlan(basicPlan);
-		basicUser.setUsername("IntgTestUser");
-		basicUser.setEmail("IntgTestUser@email.com");
+		
 		
 		/* Create a Role*/
 		Role basicRole = createRole(RolesEnum.BASIC);			

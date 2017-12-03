@@ -6,6 +6,7 @@ import java.util.Set;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -23,6 +24,15 @@ import com.zorro.web.i18n.I18NService;
 
 public class ZorrowebApplication implements CommandLineRunner{
 
+	@Value("${webmaster.username}")
+	private String webMasterUsername;
+	
+	@Value("${webmaster.password}")
+	private String webMasterPassword;
+	
+	@Value("${webmaster.email}")
+	private String webMasterEmail;
+	
 	@Autowired
 	UserService userService;
 	
@@ -34,11 +44,12 @@ public class ZorrowebApplication implements CommandLineRunner{
 	
 	public void run(String... args) throws Exception{
 		
-		User user = UserUtils.createBasicUser();
-		user.setUsername("CommandLineUser");
-		user.setEmail("CommandLine@email.com");
+		
+		User user = UserUtils.createBasicUser(webMasterUsername,webMasterEmail);
+		user.setPassword(webMasterPassword);
+		
 		Set<UserRole> userRoles = new HashSet<>();
-		userRoles.add(new UserRole(user, new Role(RolesEnum.BASIC)));
+		userRoles.add(new UserRole(user, new Role(RolesEnum.ADMIN)));
 		
 		LOG.info("Creating Username :"+user.getUsername());		
 		User newUser = userService.CreateUser(user, PlansEnum.PRO, userRoles);
