@@ -17,7 +17,7 @@ public interface UserRepository extends CrudRepository<User, Long>{
      * @param username The username
      * @return a User given a username or null if not found.
      */
-    User findByUsername(String username);
+    public User findByUsername(String username);
 
     /**
      * Returns a User for the given email or null if none was found.

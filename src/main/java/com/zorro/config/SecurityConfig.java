@@ -11,12 +11,17 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import com.zorro.backend.service.UserSecurityService;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	private Environment env;
+	
+	@Autowired
+	UserSecurityService userSecurityService;
 	
 	
 	 /** Public URLs. */
@@ -60,10 +65,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-                .inMemoryAuthentication()
-                .withUser("user").password("password")
-                .roles("USER");
+
+				auth
+					.userDetailsService(userSecurityService);
+		//        auth
+//                .inMemoryAuthentication()
+//                .withUser("user").password("password")
+//                .roles("USER");
     }
 
 	
