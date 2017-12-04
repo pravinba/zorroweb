@@ -28,7 +28,7 @@ import com.zorro.utils.UserUtils;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = ZorrowebApplication.class)
-public class RepositoryIntegrationTest {
+public class UserIntegrationTest extends AbstractIntegrationTest{
 
 	@Rule 
 	public TestName testName = new TestName();
@@ -58,10 +58,7 @@ public class RepositoryIntegrationTest {
 		Assert.notNull(retrievedPlan);
 	}
 
-	private Plan createPlan(PlansEnum plansEnum) {
-		// TODO Auto-generated method stub		
-		return new Plan(plansEnum);
-	}
+	
 	
 	
 	@Test
@@ -72,10 +69,7 @@ public class RepositoryIntegrationTest {
 		Assert.notNull(retrievedRole);
 	}
 
-	private Role createRole(RolesEnum rolesEnum) {
-		// TODO Auto-generated method stub
-		return new Role(rolesEnum);
-	}
+	
 	
 	@Test
 	public void testDeleteUser() throws Exception{
@@ -150,34 +144,9 @@ public class RepositoryIntegrationTest {
 		
 	}
 	
-	private User createUser(String username, String email) {
-		/* Create a Plan and populate it to POJO*/
-		Plan basicPlan = createPlan(PlansEnum.BASIC);
-		
-		/* Save Plan to Plan table */
-		planRepository.save(basicPlan);
-				
-		/* Create a User - Populate plan & other attributes to the User POJO*/
-		User basicUser = UserUtils.createBasicUser(username, email);
-		basicUser.setPlan(basicPlan);
-		
-		
-		/* Create a Role*/
-		Role basicRole = createRole(RolesEnum.BASIC);			
-		
-		/* Save Role to table */
-		roleRepository.save(basicRole);
-		
-		/* Add the role & user to a HashSet*/		
-		Set<UserRole> userRoles = new HashSet<>();
-		UserRole userRole = new UserRole(basicUser, basicRole);		
-		userRoles.add(userRole);
-		
-		/* Populate UserRole to User POJO */
-		basicUser.getUserRoles().addAll(userRoles);
-		basicUser = userRepository.save(basicUser);
-		return basicUser;
-	}
+	protected User createUser(TestName testName) {
+        return createUser(testName.getMethodName(), testName.getMethodName() + "@zorromail.com");
+    }
 	
 
 }	
