@@ -3,6 +3,7 @@ package com.zorro.test.integration;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.rules.TestName;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.zorro.backend.persistence.domain.backend.Plan;
@@ -65,5 +66,9 @@ public abstract class AbstractIntegrationTest {
 		basicUser = userRepository.save(basicUser);
 		return basicUser;
 	}
+	
+	protected User createUser(TestName testName) {
+        return createUser(testName.getMethodName(), testName.getMethodName() + "@zorromail.com");
+    }
 
 }
