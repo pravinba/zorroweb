@@ -52,7 +52,7 @@ public class ZorrowebApplication implements CommandLineRunner{
 		userRoles.add(new UserRole(user, new Role(RolesEnum.ADMIN)));
 		
 		LOG.info("Creating Username :"+user.getUsername());		
-		User newUser = userService.CreateUser(user, PlansEnum.PRO, userRoles);
+		User newUser = userService.createUser(user, PlansEnum.PRO, userRoles);
 		LOG.info("Created Username :"+user.getUsername());	
 		
 	}
