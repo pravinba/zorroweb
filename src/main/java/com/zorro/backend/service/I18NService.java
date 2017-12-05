@@ -1,4 +1,4 @@
-package com.zorro.web.i18n;
+package com.zorro.backend.service;
 
 import java.util.Locale;
 
