@@ -14,7 +14,6 @@ import junit.framework.Assert;
 
 @SuppressWarnings("deprecation")
 @RunWith(SpringRunner.class)
-//@SpringApplicationConfiguration(classes=ZorrowebApplication.class)
 @WebAppConfiguration
 @SpringBootTest
 public class ZorrowebApplicationTests {
@@ -25,7 +24,7 @@ public class ZorrowebApplicationTests {
 	private I18NService i18NService;
 	@Test
 	public void testMessageByLocaleService() throws Exception{
-		String expectedResult = "ZorroWeb Spring & Stripe App";
+		String expectedResult = "Springweb & Stripe Demo";
 		String messageId = "index.main.callout";
 		String actual = i18NService.getMessage(messageId);
 		Assert.assertEquals("The actual string does not match with expected string", expectedResult, actual);
