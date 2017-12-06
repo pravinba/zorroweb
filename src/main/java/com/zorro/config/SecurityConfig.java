@@ -16,6 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 import com.zorro.backend.service.UserSecurityService;
 import com.zorro.web.controllers.ForgotMyPasswordController;
+import com.zorro.web.controllers.SignupController;
 
 @Configuration
 @EnableWebSecurity
@@ -42,10 +43,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
             "/error/**/*",
             "/console/**",            
             ForgotMyPasswordController.FORGOT_PASSWORD_URL_MAPPING,
-            ForgotMyPasswordController.CHANGE_PASSWORD_PATH
-            /*
+            ForgotMyPasswordController.CHANGE_PASSWORD_PATH,
             SignupController.SIGNUP_URL_MAPPING
-            */
+            
     };
     
     @Bean
@@ -55,7 +55,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
     	
         List<String> activeProfiles = Arrays.asList(env.getActiveProfiles());
-        if (activeProfiles.contains("dev")) {
+        if (activeProfiles.contains("prod")) {
             http.csrf().disable();
             http.headers().frameOptions().disable();
         }

@@ -11,10 +11,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.zorro.backend.persistence.domain.backend.Plan;
 import com.zorro.backend.persistence.domain.backend.Role;
 import com.zorro.backend.persistence.domain.backend.User;
 import com.zorro.backend.persistence.domain.backend.UserRole;
-import com.zorro.backend.service.I18NService;
+import com.zorro.backend.service.PlanService;
 import com.zorro.backend.service.UserService;
 import com.zorro.enums.PlansEnum;
 import com.zorro.enums.RolesEnum;
@@ -36,6 +37,9 @@ public class ZorrowebApplication implements CommandLineRunner{
 	@Autowired
 	UserService userService;
 	
+	@Autowired
+	PlanService planService;
+	
 	private static final Logger LOG = LoggerFactory.getLogger(ZorrowebApplication.class);
 	
 	public static void main(String[] args) {
@@ -44,6 +48,11 @@ public class ZorrowebApplication implements CommandLineRunner{
 	
 	public void run(String... args) throws Exception{
 		
+		LOG.info("Creating Plans >>>");
+		planService.createPlan(PlansEnum.BASIC.getId());
+		LOG.info("BASIC Plan Created");
+		planService.createPlan(PlansEnum.PRO.getId());
+		LOG.info("PRO Plan Created ");
 		
 		User user = UserUtils.createBasicUser(webMasterUsername,webMasterEmail);
 		user.setPassword(webMasterPassword);
