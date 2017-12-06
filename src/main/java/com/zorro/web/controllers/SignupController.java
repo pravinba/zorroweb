@@ -30,6 +30,7 @@ import com.zorro.backend.service.PlanService;
 import com.zorro.backend.service.UserService;
 import com.zorro.enums.PlansEnum;
 import com.zorro.enums.RolesEnum;
+import com.zorro.service.S3Service;
 import com.zorro.utils.UserUtils;
 import com.zorro.web.domain.frontend.BasicAccountPayload;
 import com.zorro.web.domain.frontend.ProAccountPayload;
@@ -43,6 +44,9 @@ public class SignupController {
 	@Autowired
 	UserService userService;
 	
+	@Autowired
+	private S3Service s3Service;
+	
 	private static final Logger LOG = LoggerFactory.getLogger(SignupController.class);
 	
 	public static final String SIGNUP_URL_MAPPING = "/signup";
@@ -55,6 +59,7 @@ public class SignupController {
     public static final String DUPLICATED_EMAIL_KEY = "duplicatedEmail";
     public static final String SIGNED_UP_MESSAGE_KEY = "signedUp";
     public static final String ERROR_MESSAGE_KEY = "message";
+    
     
     
     @RequestMapping(value = SIGNUP_URL_MAPPING, method = RequestMethod.GET)
@@ -109,6 +114,19 @@ public class SignupController {
         // plans and roles
         LOG.debug("Transforming user payload into User domain object");
         User user = UserUtils.fromWebUserToDomainUser(payload);
+        
+        // Stores the profile image on Amazon S3 and stores the URL in the user's record
+        if (file != null && !file.isEmpty()) {
+        	//String profileImageUrl = null;
+            String profileImageUrl = s3Service.storeProfileImage(file, payload.getUsername());
+            if (profileImageUrl != null) {
+                user.setProfileImageUrl(profileImageUrl);
+            } else {
+                LOG.warn("There was a problem uploading the profile image to S3. The user's profile will" +
+                        " be created without the image");
+            }
+
+        }
         
 		// Sets the Plan and the Roles (depending on the chosen plan)
         LOG.debug("Retrieving plan from the database");
