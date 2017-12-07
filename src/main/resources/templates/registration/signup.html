@@ -130,8 +130,8 @@
                                name="phoneNumber" />
                     </div>
 
-                    <!-- Additional HTML form fields for Pro Account subscription 
-                    <div th:if="${#httpServletRequest.getParameter('planId') == #strings.toString(T(com.devopsbuddy.enums.PlansEnum).PRO.getId())}">
+                    <!-- Additional HTML form fields for Pro Account subscription --> 
+                    <div th:if="${#httpServletRequest.getParameter('planId') == #strings.toString(T(com.zorro.enums.PlansEnum).PRO.getId())}">
                         <div class="form-group">
                             <label for="cardNumber" th:text="#{signup.form.credit.card.number}"></label>
                             <input type="text" id="cardNumber" th:field="*{cardNumber}" class="form-control"/>
@@ -175,7 +175,7 @@
                             </select>
                         </div>
                     </div>
-					-->
+					
                     <button type="submit" class="btn btn-primary" th:text="#{form.submit}"></button>
 
                 </form>
