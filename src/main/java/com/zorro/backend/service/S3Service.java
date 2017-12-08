@@ -1,4 +1,4 @@
-package com.zorro.service;
+package com.zorro.backend.service;
 
 import java.io.BufferedOutputStream;
 import java.io.File;
@@ -20,6 +20,7 @@ import com.amazonaws.services.s3.model.AccessControlList;
 import com.amazonaws.services.s3.model.GroupGrantee;
 import com.amazonaws.services.s3.model.Permission;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.zorro.exceptions.S3Exception;
 
 @Service
 public class S3Service {
@@ -86,7 +87,7 @@ public class S3Service {
                 tmpProfileImageFile.delete();
             }
         } catch (IOException e) {
-            throw new SdkClientException(e);
+            throw new S3Exception(e);
         }
 
         return profileImageUrl;
@@ -116,7 +117,7 @@ public class S3Service {
         } catch (AmazonClientException ace) {
             LOG.error("An error occurred while connecting to S3. Will not execute action" +
                     " for bucket: {}", bucketName, ace);
-            throw new SdkClientException(ace);
+            throw new S3Exception(ace);
         }
 
 
@@ -136,7 +137,7 @@ public class S3Service {
 
         if (!resource.exists()) {
             LOG.error("The file {} does not exist. Throwing an exception", resource.getAbsolutePath());
-            throw new SdkClientException("The file " + resource.getAbsolutePath() + " doesn't exist");
+            throw new S3Exception("The file " + resource.getAbsolutePath() + " doesn't exist");
         }
 
         String rootBucketUrl = this.ensureBucketExists(bucketName);
@@ -159,7 +160,7 @@ public class S3Service {
             } catch (AmazonClientException ace) {
                 LOG.error("A client exception occurred while trying to store the profile" +
                         " image {} on S3. The profile image won't be stored", resource.getAbsolutePath(), ace);
-                throw new SdkClientException(ace);
+                throw new S3Exception(ace);
             }
         }
 
