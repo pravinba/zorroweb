@@ -41,33 +41,40 @@ public class UserService {
     private static final Logger LOG = LoggerFactory.getLogger(UserService.class);
 
 	
-	@Transactional
-	public User createUser(User user, PlansEnum plansEnum, Set<UserRole> userRoles) {
-		
-		/* Encode the user password and set it in the POJO */
-		String encryptedPassword = passwordEncoder.encode(user.getPassword());
-		user.setPassword(encryptedPassword);
-		
-		/* Create a plan & persist to DB */
-		
-		Plan plan = new Plan(plansEnum);
-		if(!planRepository.exists(plansEnum.getId()))
-		{
-			plan = planRepository.save(plan);
-		}		
-			
-		/* Set Role & Plan to User Object */
-		user.setPlan(plan);
-		
-		for(UserRole usr : userRoles) {
-			roleRepository.save(usr.getRole());
-		}		
-		user.getUserRoles().addAll(userRoles);
-		
-		user = userRepository.save(user);
-		
-		return user;
-	}
+    @Transactional
+    public User createUser(User user, PlansEnum plansEnum, Set<UserRole> userRoles) {
+
+        User localUser = userRepository.findByEmail(user.getEmail());
+
+        if (localUser != null) {
+            LOG.info("User with username {} and email {} already exist. Nothing will be done. ",
+                    user.getUsername(), user.getEmail());
+        } else {
+
+            String encryptedPassword = passwordEncoder.encode(user.getPassword());
+            user.setPassword(encryptedPassword);
+
+            Plan plan = new Plan(plansEnum);
+            // It makes sure the plans exist in the database
+            if (!planRepository.exists(plansEnum.getId())) {
+                plan = planRepository.save(plan);
+            }
+
+            user.setPlan(plan);
+
+            for (UserRole ur : userRoles) {
+                roleRepository.save(ur.getRole());
+            }
+
+            user.getUserRoles().addAll(userRoles);
+
+            localUser = userRepository.save(user);
+
+        }
+
+        return localUser;
+
+    }
 
 	 /**
      * Returns a user by username or null if a user could not be found.
